@@ -1,0 +1,17 @@
+Instar2M001C06    - Name of subject or collection
+23-May-2010       - Data collection start date (format must be DD-MMM-YYYY)
+12:50:00          - Data collection start time (format must be HH:MM:SS)
+40                - Number of 15 second epochs per collection point (40 = 10 minutes)
+50                - Age of patient (placeholder in this data, but required to be 1 or higher)
+                  - Blank line for placeholder
+F                 - Gender (must be M or F)
+0                 - Data start
+-------------------------------------------------------------------------------------------------
+Instar2M001C06
+11-Sep-2014
+13:30:00
+40
+50
+
+F
+0
