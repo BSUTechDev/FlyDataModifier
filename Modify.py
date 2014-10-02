@@ -1,4 +1,5 @@
 import string
+import os
 
 __author__ = 'Joe Bruno'
 
@@ -11,12 +12,38 @@ def main():
 def modFiles(fileLocList):
     # Loop through each file
     for fileLoc in fileLocList:
+        # Open file in read/write mode
         xFile = open(fileLoc, "r+")
 
         # Old header is first 45 bytes
         oldHeader = xFile.readlines(45)
 
         newHeader = constructNewHeader(oldHeader)
+
+        # Datapoint start
+        xFile.seek(40)
+
+        # Read the rest of the file
+        fileContent = xFile.read()
+
+        # Start of file
+        xFile.seek(0)
+
+        # Write new header
+        xFile.write(newHeader)
+
+        # Write the data
+        xFile.write(fileContent)
+
+        # Close the handle
+        xFile.close()
+
+        # New file name
+        removedExtension = fileLoc[:-3] + "awd"
+
+        # Change the file extension
+        os.rename(fileLoc, removedExtension)
+
 
 
 def constructNewHeader(xData):
@@ -33,8 +60,12 @@ def constructNewHeader(xData):
     # Epoch Value
     xEpoch = calculateEpoch(xData[2])
 
-    xGender = "Ffv"
-    print(xEpoch)
+    # Set to female by default
+    xGender = "F"
+
+    # Build the new header and return it
+    newHead = xName + "\n" + xDate + "\n" + xTime + "\n" + str(xEpoch) + "\n" + str(xAge) + "\n\n" + xGender
+    return newHead
 
 def calculateEpoch(numMin):
     return (eval(numMin) * 60) // 15
