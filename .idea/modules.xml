@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/FlyDataModifier.iml" filepath="$PROJECT_DIR$/.idea/FlyDataModifier.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/GuessingGame/.idea/GuessingGame.iml" filepath="$USER_HOME$/PycharmProjects/GuessingGame/.idea/GuessingGame.iml" />
     </modules>
   </component>
 </project>

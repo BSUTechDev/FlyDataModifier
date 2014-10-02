@@ -44,8 +44,6 @@ def modFiles(fileLocList):
         # Change the file extension
         os.rename(fileLoc, removedExtension)
 
-
-
 def constructNewHeader(xData):
     # Read first line in the list
     xName = xData[0][0:13]
