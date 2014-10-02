@@ -1,9 +1,9 @@
 MyRunM001C01   27 Sep 2013
 840
-10
-1540
-38
-12
+10 # num of epochs    result = (this * 60) / 15
+1540 # Time Edited
+38 # IDK
+12 # IDK
 6
 2
 0
