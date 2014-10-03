@@ -11,5 +11,5 @@ dirPath = os.path.join(os.path.join(os.path.dirname(__file__)), "samples")
 print(dirPath)
 Interface.start(dirPath)
 fileList = Interface.populateList()
-Modify.main(fileList)
+Modify.main(fileList, isModule=False)  # Execute incognito as main file
 print("Done!")
