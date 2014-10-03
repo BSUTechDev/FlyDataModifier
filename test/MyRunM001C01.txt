@@ -1,8 +1,8 @@
 MyRunM001C01   27 Sep 2013
-840 # Garbage
-10 # num of epochs    result = (this * 60) / 15
-1540 # Time Edited 00:00:00
-38 # DATA START
+840
+10
+1540
+38
 12
 6
 2

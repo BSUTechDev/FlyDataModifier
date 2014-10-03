@@ -1,11 +1,31 @@
 import string
 import os
+import shutil
+
+"""
+Multiline comments - usually used to describe overview of python script
+"""
 
 __author__ = 'Joe Bruno'
 
-def main():
+def main(fileList = None, isModule = True):
     # To be the list of all found files in need of modification
-    fileList = ['/Users/joe/Desktop/FDMTesting/MyRunM001C01.txt']
+    if not fileList and isModule:
+        raise AttributeError('No Files were passed in!')
+
+    # variables used to help with testing - can keep hitting run without any damage
+    # This portion will probably be moved elsewhere - just quick to do it here
+    rootDir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    sampleDir = "samples"
+    testDir = "test"
+    testFile = "MyRunM001C01.txt"
+    sampleFilePath = os.path.join(rootDir, sampleDir, testFile)
+    testFilePath = os.path.join(rootDir, testDir, testFile)
+
+    shutil.copyfile(sampleFilePath, testFilePath) # copy sample to test directory
+    os.remove(os.path.join(rootDir, testDir, testFile[:testFile.rfind('.')]+'.awd'))
+    print("Testing with File: %s" % testFilePath)
+    fileList = [testFilePath]
 
     modFiles(fileList)
 
@@ -66,7 +86,8 @@ def constructNewHeader(xData):
     return newHead
 
 def calculateEpoch(numMin):
-    return (eval(numMin) * 60) // 15
+    return (int(numMin) * 60) // 15 # Who keeps forcing you guys to use eval lol - use casting instead
+                             # you can delete your whole file system if numMin = "__import__('os').system('clear')"
 
 def formatDate(oldDate):
     # Add the dashes
@@ -76,4 +97,5 @@ def formatTime(oldTime):
     # Add a colon and trailing zero's
     return oldTime[0:2] + ":" + oldTime[2:4] + ":00"
 
-main()
+if __name__ == "__main__":
+    main(isModule=False)
