@@ -1,4 +1,4 @@
 FlyDataModifier
 ===============
 
-This directory contains a sample file data. Please do not modify the file itself. Instead use/reference/copy the file when applying permanent edits. 
+This directory contains a sample file data. Please do not modify the file itself. Instead copy the file to your specific test location when applying permanent edits. 
