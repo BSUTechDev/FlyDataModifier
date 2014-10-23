@@ -20,5 +20,5 @@ dirPath = args.loc
 print(dirPath)
 Interface.start(dirPath)
 fileList = Interface.populateList()
-Modify.main(fileList, isModule=False)  # Execute incognito as main file
+Modify.main(fileList)
 print("Done!")
