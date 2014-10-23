@@ -58,12 +58,12 @@ def modFiles(fileLocList, dirPath):
         xFile = open(newFilePath, "r+")
 
         # Old header is first 45 bytes
-        oldHeader = xFile.readlines(45)
+        oldHeader = xFile.readlines()
 
         newHeader = constructNewHeader(oldHeader)
 
         # Datapoint start
-        xFile.seek(40)
+        xFile.seek(39)
 
         # Read the rest of the file
         fileContent = xFile.read()
@@ -91,7 +91,7 @@ def constructNewHeader(xData):
     xDate = formatDate(xData[0][15:26])
 
     # Setting the base at a minimum
-    xAge = 1
+    xAge = 50
 
     # 4th line has time
     xTime = formatTime(xData[3])
