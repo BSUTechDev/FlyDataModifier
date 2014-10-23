@@ -20,5 +20,5 @@ dirPath = args.loc
 print(dirPath)
 Interface.start(dirPath)
 fileList = Interface.populateList()
-Modify.main(fileList)
+Modify.main(fileList ,searchPath=dirPath)
 print("Done!")

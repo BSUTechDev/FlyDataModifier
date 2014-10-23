@@ -1,6 +1,7 @@
 import string
 import os
 import shutil
+import errno
 
 """
 Multiline comments - usually used to describe overview of python script
@@ -8,12 +9,12 @@ Multiline comments - usually used to describe overview of python script
 
 __author__ = 'Joe Bruno'
 
-def main(fileList = None, isModule = True):
+def main(fileList = None, searchPath=None, isModule = True):
     # To be the list of all found files in need of modification
-    li = fileList
-    print "Items found: %d"% len(li)
-    for i, item in enumerate(li):
-        print "%s: %s" % (i+1, item)
+    # li = fileList
+    # print "Items found: %d"% len(li)
+    # for i, item in enumerate(li):
+    #     print "%s: %s" % (i+1, item)
     if not fileList and isModule:
         raise AttributeError('No Files were passed in!')
 
@@ -25,19 +26,36 @@ def main(fileList = None, isModule = True):
         testDir = "test"
         testFile = "MyRunM001C01.txt"
         sampleFilePath = os.path.join(rootDir, sampleDir, testFile)
+        testDirPath = os.path.join(rootDir, testDir)
         testFilePath = os.path.join(rootDir, testDir, testFile)
 
         shutil.copyfile(sampleFilePath, testFilePath) # copy sample to test directory
         os.remove(os.path.join(rootDir, testDir, testFile[:testFile.rfind('.')]+'.awd'))
         print("Testing with File: %s" % testFilePath)
+        searchPath = testDirPath
         fileList = [testFilePath]
-    modFiles(fileList)
+    dirPath = os.path.join(searchPath,"output-awd")
+    mkdir_P(dirPath)
+    modFiles(fileList, dirPath)
 
-def modFiles(fileLocList):
+def mkdir_P(directory_name):
+    try:
+        os.makedirs(directory_name)
+    except OSError as exc:     
+        pass
+
+def modFiles(fileLocList, dirPath):
     # Loop through each file
     for fileLoc in fileLocList:
+        # copy file contents to a similar file
+        newFileName = fileLoc[:-3] + "awd"
+        newFilePath = os.path.join(dirPath,os.path.basename(newFileName))
+        print(newFilePath)
+        shutil.copy2(fileLoc,newFilePath)
+
+
         # Open file in read/write mode
-        xFile = open(fileLoc, "r+")
+        xFile = open(newFilePath, "r+")
 
         # Old header is first 45 bytes
         oldHeader = xFile.readlines(45)
@@ -62,11 +80,10 @@ def modFiles(fileLocList):
         # Close the handle
         xFile.close()
 
-        # New file name
-        removedExtension = fileLoc[:-3] + "awd"
-
         # Change the file extension
-        os.rename(fileLoc, removedExtension)
+        #os.rename(fileLoc, removedExtension)
+        # do this operation at the start as to leave original file in tact. 
+
 
 def constructNewHeader(xData):
     # Read first line in the list
@@ -86,12 +103,14 @@ def constructNewHeader(xData):
     xGender = "F"
 
     # Build the new header and return it
-    newHead = xName + "\n" + xDate + "\n" + xTime + "\n" + str(xEpoch) + "\n" + str(xAge) + "\n\n" + xGender
+    newHead = xName + "\n" + xDate + "\n" + xTime + "\n" + str(xEpoch) + "\n" + str(xAge) + "\n\n" + xGender +"\n"
     return newHead
 
 def calculateEpoch(numMin):
     return (int(numMin) * 60) // 15 # Who keeps forcing you guys to use eval lol - use casting instead
                              # you can delete your whole file system if numMin = "__import__('os').system('clear')"
+
+
 
 def formatDate(oldDate):
     # Add the dashes
