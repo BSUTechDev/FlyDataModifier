@@ -1,5 +1,5 @@
 #!/usr/bin/python
-__author__ = 'Joe Bruno, Volodimir Duda'
+__author__ = 'Volodimir Duda'
 
 from Interface import Interface
 from Core import Modify

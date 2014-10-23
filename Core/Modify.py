@@ -7,7 +7,7 @@ import errno
 Multiline comments - usually used to describe overview of python script
 """
 
-__author__ = 'Joe Bruno'
+__author__ = 'Joe Bruno, Volodimir Duda'
 
 def main(fileList = None, searchPath=None, isModule = True):
     # To be the list of all found files in need of modification
@@ -48,37 +48,49 @@ def modFiles(fileLocList, dirPath):
     # Loop through each file
     for fileLoc in fileLocList:
         # copy file contents to a similar file
-        newFileName = fileLoc[:-3] + "awd"
+        newFileName = fileLoc[:fileLoc.rfind('.txt')] + ".awd"
         newFilePath = os.path.join(dirPath,os.path.basename(newFileName))
-        print(newFilePath)
+        print "New File name: %s" %newFilePath
         shutil.copy2(fileLoc,newFilePath)
 
 
         # Open file in read/write mode
-        xFile = open(newFilePath, "r+")
+        reader = open(fileLoc, "r+")
+        
 
-        # Old header is first 45 bytes
-        oldHeader = xFile.readlines()
+        # Old header is first 4 lines
+        contents = reader.readlines()
+        oldHeader = contents[:4]
 
         newHeader = constructNewHeader(oldHeader)
+        if newHeader == None:
+            pass
 
-        # Datapoint start
-        xFile.seek(39)
+        writer = open(newFilePath, "w")
+        for line in newHeader:
+            writer.write(line)
 
-        # Read the rest of the file
-        fileContent = xFile.read()
+        for line in contents[4:]:
+            writer.write(line)
 
-        # Start of file
-        xFile.seek(0)
+        writer.close()
+        reader.close()
 
-        # Write new header
-        xFile.write(newHeader)
+        # # Read the rest of the file
+        # fileContent = xFile.read()
 
-        # Write the data
-        xFile.write(fileContent)
+        # # Start of file
+        # xFile.seek(0)
 
-        # Close the handle
-        xFile.close()
+        # # Write new header
+        # xFile.write(newHeader)
+
+        # # Write the data
+        # xFile.write(fileContent)
+
+        # # Close the handle
+        # xFile.close()
+
 
         # Change the file extension
         #os.rename(fileLoc, removedExtension)
@@ -87,8 +99,11 @@ def modFiles(fileLocList, dirPath):
 
 def constructNewHeader(xData):
     # Read first line in the list
-    xName = xData[0][0:13]
-    xDate = formatDate(xData[0][15:26])
+    nameSpaceSep = xData[0].find(" ")
+    if nameSpaceSep == -1:
+        return None
+    xName = xData[0][:nameSpaceSep].strip()
+    xDate = formatDate(xData[0][nameSpaceSep:].strip())
 
     # Setting the base at a minimum
     xAge = 50
