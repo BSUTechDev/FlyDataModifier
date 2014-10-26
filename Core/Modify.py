@@ -47,54 +47,39 @@ def mkdir_P(directory_name):
 def modFiles(fileLocList, dirPath):
     # Loop through each file
     for fileLoc in fileLocList:
-        # copy file contents to a similar file
-        newFileName = fileLoc[:fileLoc.rfind('.txt')] + ".awd"
-        newFilePath = os.path.join(dirPath,os.path.basename(newFileName))
-        print "New File name: %s" %newFilePath
-        shutil.copy2(fileLoc,newFilePath)
+        try:
+            # copy file contents to a similar file
+            newFileName = fileLoc[:fileLoc.rfind('.txt')] + ".awd"
+            newFilePath = os.path.join(dirPath,os.path.basename(newFileName))
+            print "New File name: %s" %newFilePath
+            shutil.copy2(fileLoc,newFilePath)
 
+            # Open file in read/write mode
+            reader = open(fileLoc, "r+")
 
-        # Open file in read/write mode
-        reader = open(fileLoc, "r+")
-        
+            # Old header is first 4 lines
+            contents = reader.readlines()
 
-        # Old header is first 4 lines
-        contents = reader.readlines()
-        oldHeader = contents[:4]
+            # Verify we have a header; else pass
+            if len(contents) < 5:
+                pass
+            oldHeader = contents[:4]
 
-        newHeader = constructNewHeader(oldHeader)
-        if newHeader == None:
-            pass
+            newHeader = constructNewHeader(oldHeader)
+            if newHeader == None:
+                pass
 
-        writer = open(newFilePath, "w")
-        for line in newHeader:
-            writer.write(line)
+            writer = open(newFilePath, "w")
+            for line in newHeader:
+                writer.write(line)
 
-        for line in contents[4:]:
-            writer.write(line)
+            for line in contents[4:]:
+                writer.write(line)
 
-        writer.close()
-        reader.close()
-
-        # # Read the rest of the file
-        # fileContent = xFile.read()
-
-        # # Start of file
-        # xFile.seek(0)
-
-        # # Write new header
-        # xFile.write(newHeader)
-
-        # # Write the data
-        # xFile.write(fileContent)
-
-        # # Close the handle
-        # xFile.close()
-
-
-        # Change the file extension
-        #os.rename(fileLoc, removedExtension)
-        # do this operation at the start as to leave original file in tact. 
+            writer.close()
+            reader.close()
+        except:
+            print "Some error occurred."
 
 
 def constructNewHeader(xData):
@@ -131,7 +116,8 @@ def formatDate(oldDate):
     # Add the dashes
     return oldDate.replace(" ", "-")
 
-def formatTime(oldTime):
+def formatTime(oldTime): 
+    # This should be replaced with the DateTime library
     # Add a colon and trailing zero's
     return oldTime[0:2] + ":" + oldTime[2:4] + ":00"
 
