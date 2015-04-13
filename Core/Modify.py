@@ -109,6 +109,7 @@ def constructNewHeader(xData):
 def calculateEpoch(numMin):
     return (int(numMin) * 60) // 15 # Who keeps forcing you guys to use eval lol - use casting instead
                              # you can delete your whole file system if numMin = "__import__('os').system('clear')"
+                             # imagine if 'clear' was 'rm -rf /' ...
 
 
 
